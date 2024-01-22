@@ -299,18 +299,21 @@ class RobotKineClass():
         ################################################ TASK 6
         q_a = np.zeros(3)
         q_b = np.zeros(3)
+        
+        q_a[0] = np.arctan2(yP, xP)
+        q_b[0] = np.arctan2(yP, xP)
+        
+        r = sqrt(np.power(xP, 2)+np.power(yP, 2))
+        z = zP-l1
 
-        q_a[0] = 0.
-        q_b[0] = 0.
+        q_a[2] = np.arccos((np.power(r, 2)+np.power(z, 2)-np.power(l2, 2)-np.power(l3, 2))/(2*l2*l3))
+        q_b[2] = -q_a[2]
 
-        r = 0.
-        z = 0.
+        a = np.arctan2(z, r)
+        b = np.arccos((np.power(r, 2)+np.power(z, 2)+np.power(l2, 2)-np.power(l3, 2))/(2*l2*sqrt(np.power(r, 2)+np.power(z, 2))))
 
-        q_a[2] = 0.
-        q_b[2] = 0.
-
-        q_a[1] = 0.
-        q_b[1] = 0.
+        q_a[1] = a-b
+        q_b[1] = a+b
         
         q = [q_a, q_b]
         
