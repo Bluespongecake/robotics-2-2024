@@ -226,6 +226,7 @@ class RobotKineClass():
         self.links = link_lengths    # length of links
 
         ################################################ TASK 1
+        # COMPLETE
         #Define DH table for each link. DH_tab in R^njx4
         #d,theta,a,alpha
 		#thetas are all 0
@@ -252,7 +253,7 @@ class RobotKineClass():
             T_i_1_i = DH_matrix(DH_params) #Pose of joint i wrt i-1
             
             ################################################ TASK 3 (replace np.eye(4) with the correct matrices)
-			#             Completed
+            # COMPLETE
             T_0_i = np.matmul(T_0_i_1, T_i_1_i) #Pose of joint i wrt base
 
             T_0_i_1 = T_0_i
@@ -269,9 +270,10 @@ class RobotKineClass():
         l1, l2, l3 = self.links
         
         ################################################ TASK 4
-        val = 0.
-        r_max = 0.
-        r_min = 0.
+        # COMPLETE
+        val = np.power(xP, 2) + np.power(yP, 2) + np.power((zP - l1), 2)
+        r_max = (l2 + l3)
+        r_min = (l2 - l3)
 
         inWS = True
 
