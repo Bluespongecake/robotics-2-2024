@@ -298,6 +298,7 @@ class RobotKineClass():
         
         ################################################ TASK 6
         q_a = np.zeros(3)
+ #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
         q_b = np.zeros(3)
         
         q_a[0] = np.arctan2(yP, xP)
@@ -308,7 +309,7 @@ class RobotKineClass():
 
         q_a[2] = np.arccos((np.power(r, 2)+np.power(z, 2)-np.power(l2, 2)-np.power(l3, 2))/(2*l2*l3))
         q_b[2] = -q_a[2]
-
+ 
         a = np.arctan2(z, r)
         b = np.arccos((np.power(r, 2)+np.power(z, 2)+np.power(l2, 2)-np.power(l3, 2))/(2*l2*sqrt(np.power(r, 2)+np.power(z, 2))))
 
@@ -343,9 +344,9 @@ class RobotKineClass():
         l1, l2, l3 = self.links
         
         ################################################ TASK 7
-        self.Jacobian = np.array([[0., 0., 0.],
-                                  [0., 0., 0.],
-                                  [0., 0., 0.]])
+        self.Jacobian = np.array([[-(l1*cos(q1)+l2*cos(q1+q2))*sin(q0), -(l1*sin(q1)+l2*sin(q1+q2))*cos(q0), -(l2*sin(q1+q2))*cos(q0)],
+                                  [(l1*cos(q1)+l2*cos(q1+q2))*cos(q0), -(l1*sin(q1)+l2*sin(q1+q2))*sin(q0), -(l2*sin(q1+q2))*sin(q0)],
+                                  [0., l1*cos(q1)+l2*cos(q1+q2), l2*cos(q1+q2)]])
         x_dot = np.matmul(self.Jacobian, q_dot)
         return x_dot
 
