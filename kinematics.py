@@ -7,7 +7,7 @@ DE3 Applied Robotics, Coursework 1 - MODEL
 
 """
 
-from math import cos, sin, acos, asin, atan2, sqrt, pi
+from math import cos, sin, acos, asin, atan2, sqrt, pi, atan
 from numpy.linalg import matrix_rank as rank
 from numpy.linalg import pinv, norm
 from std_msgs.msg import Float64
@@ -206,7 +206,7 @@ def DH_matrix(DH_params):
     alpha = DH_params[3]
     
     ################################################ TASK 2
-	# 	Completed
+	# 	COMPLETE
     DH_matrix = np.array([[cos(theta) , -sin(theta), 0., a],
                           [sin(theta) * cos(alpha) , cos(theta) * cos(alpha), -sin(alpha), -sin(alpha) * d],
                           [sin(theta) * sin(alpha) , cos(theta) * sin(alpha), cos(alpha), cos(alpha) * d],
@@ -243,8 +243,8 @@ class RobotKineClass():
         for i in range(self.nj):
 
             DH_params = np.copy(self.DH_tab[i,:])
-            print('q',q)
-            print(DH_params)
+            # print('q',q)
+            # print(DH_params)
             if self.joint_types[i] == 'r':
                 DH_params[1] = DH_params[1]+q[i]
             elif self.joint_types[i] == 'p':
@@ -303,21 +303,22 @@ class RobotKineClass():
             print("OUT OF WS. NO SOLUTION FOUND")
             return q,Poses
         
+        # q_a is one solution, q_b is another
         ################################################ TASK 6
         q_a = np.zeros(3)
         q_b = np.zeros(3)
 
-        q_a[0] = 0.
-        q_b[0] = 0.
+        q_a[0] = atan2(yP, xP)
+        q_b[0] = pi + atan2(yP, xP)
 
-        r = 0.
+        r = sqrt(np.power(xP, 2) + np.power(zP - self.links[0], 2))
         z = 0.
 
-        q_a[2] = 0.
-        q_b[2] = 0.
+        q_a[2] =   pi - acos((np.power(self.links[1], 2) + np.power(self.links[2], 2) - np.power(r, 2)) / 2 * self.links[1] * self.links[2])
+        q_b[2] = - pi + acos((np.power(self.links[1], 2) + np.power(self.links[2], 2) - np.power(r, 2)) / 2 * self.links[1] * self.links[2])
 
-        q_a[1] = 0.
-        q_b[1] = 0.
+        q_a[1] = atan2((zP - self.links[0]), xP) - acos( (np.power(self.links[1],2) + np.power(r, 2) - np.power(self.links[2], 2) ) / (2 * self.links[1] * r) )
+        q_b[1] = atan2((zP - self.links[0]), xP) + acos( (np.power(self.links[1],2) + np.power(r, 2) - np.power(self.links[2], 2) ) / (2 * self.links[1] * r) )
         
         q = [q_a, q_b]
         
