@@ -303,22 +303,24 @@ class RobotKineClass():
             print("OUT OF WS. NO SOLUTION FOUND")
             return q,Poses
         
-        # q_a is one solution, q_b is another
         ################################################ TASK 6
         q_a = np.zeros(3)
         q_b = np.zeros(3)
+        
+        q_a[0] = np.arctan2(yP, xP)
+        q_b[0] = np.arctan2(yP, xP)
+        
+        r = sqrt(np.power(xP, 2)+np.power(yP, 2))
+        z = zP-l1
 
-        q_a[0] = atan2(yP, xP)
-        q_b[0] = pi + atan2(yP, xP)
+        q_a[2] = np.arccos((np.power(r, 2)+np.power(z, 2)-np.power(l2, 2)-np.power(l3, 2))/(2*l2*l3))
+        q_b[2] = -q_a[2]
 
-        r = sqrt(np.power(xP, 2) + np.power(zP - self.links[0], 2))
-        z = 0.
+        a = np.arctan2(z, r)
+        b = np.arccos((np.power(r, 2)+np.power(z, 2)+np.power(l2, 2)-np.power(l3, 2))/(2*l2*sqrt(np.power(r, 2)+np.power(z, 2))))
 
-        q_a[2] =   pi - acos((np.power(self.links[1], 2) + np.power(self.links[2], 2) - np.power(r, 2)) / 2 * self.links[1] * self.links[2])
-        q_b[2] = - pi + acos((np.power(self.links[1], 2) + np.power(self.links[2], 2) - np.power(r, 2)) / 2 * self.links[1] * self.links[2])
-
-        q_a[1] = atan2((zP - self.links[0]), xP) - acos( (np.power(self.links[1],2) + np.power(r, 2) - np.power(self.links[2], 2) ) / (2 * self.links[1] * r) )
-        q_b[1] = atan2((zP - self.links[0]), xP) + acos( (np.power(self.links[1],2) + np.power(r, 2) - np.power(self.links[2], 2) ) / (2 * self.links[1] * r) )
+        q_a[1] = a-b
+        q_b[1] = a+b
         
         q = [q_a, q_b]
         
@@ -348,7 +350,7 @@ class RobotKineClass():
         l1, l2, l3 = self.links
         
         ################################################ TASK 7
-        self.Jacobian = np.array([[0., 0., 0.],
+        self.Jacobian = np.array([[-( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * sin(q0),        -(l1 * sin(q1)) + (l2 * sin(q1+q2) * cos(q0)),      (l2 * sin(q1+q2) ) * cos(q0)    ],
                                   [0., 0., 0.],
                                   [0., 0., 0.]])
         x_dot = np.matmul(self.Jacobian, q_dot)
