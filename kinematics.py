@@ -351,7 +351,7 @@ class RobotKineClass():
         
         ################################################ TASK 7
         self.Jacobian = np.array([[-( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * sin(q0),        -(l1 * sin(q1)) + (l2 * sin(q1+q2) * cos(q0)),      (l2 * sin(q1+q2)) * cos(q0)    ],
-                                  [-( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * cos(q0),        -(l1 * sin(q1)) + (l2 * sin(q1+q2) * sin(q0)),      (l2 * sin(q1+q2)) * sin(q0)    ],
+                                  [( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * cos(q0),        -(l1 * sin(q1)) + (l2 * sin(q1+q2) * sin(q0)),      (l2 * sin(q1+q2)) * sin(q0)    ],
                                   [0.                                              ,        (l1 * cos(q1)) + (l2 * cos(q1 + q2))         ,      (l2 * cos(q1 + q2))             ]])
         x_dot = np.matmul(self.Jacobian, q_dot)
         return x_dot
