@@ -1,0 +1,2 @@
+coursework_1
+-DCATKIN_DEVEL_PREFIX=/home/de3robotics/Desktop/DE3Robotics/devel -DCMAKE_INSTALL_PREFIX=/home/de3robotics/Desktop/DE3Robotics/install -G Unix Makefiles
