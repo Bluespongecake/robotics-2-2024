@@ -1,9 +1,8 @@
 ## Notable files:
-<p>
-  <ul>
-    <li>Kinematics.py</li>
-    <li>config.yaml</li>
-</p>
+<ul>
+  <li>Kinematics.py</li>
+  <li>config.yaml</li>
+</ul>
 
 ## Starting ROS:
 `killall gzserver gzclient` <br>
