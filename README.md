@@ -1,7 +1,7 @@
 ## Notable files:
 <ul>
-  <li>Kinematics.py</li>
-  <li>config.yaml</li>
+  <li>src/coursework_1/src/kinematics.py</li>
+  <li>src/coursework_1/src/config/controller_settings.yaml</li>
 </ul>
 
 ## Starting ROS:
