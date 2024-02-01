@@ -198,7 +198,7 @@ def LinInterp(qi,qf,N_steps):
 
 
 #DH_params = parameters for link i
-#d,theta,a,alpha
+#d,theta,a,alpha -> the order is important as it differs from the Lecture Notes
 def DH_matrix(DH_params):
     d = DH_params[0]
     theta = DH_params[1]
@@ -207,6 +207,8 @@ def DH_matrix(DH_params):
     
     ################################################ TASK 2
 	# 	COMPLETE
+
+	# DH matrix calculated using the parameters given above
     DH_matrix = np.array([[cos(theta) , -sin(theta), 0., a],
                           [sin(theta) * cos(alpha) , cos(theta) * cos(alpha), -sin(alpha), -sin(alpha) * d],
                           [sin(theta) * sin(alpha) , cos(theta) * sin(alpha), cos(alpha), cos(alpha) * d],
@@ -228,8 +230,8 @@ class RobotKineClass():
         ################################################ TASK 1
         # COMPLETE
         #Define DH table for each link. DH_tab in R^njx4
-        #d,theta,a,alpha
-		#thetas are all 0
+        #d,theta,a,alpha -> order is different from order in DH table given in Lecture Notes
+		#angles are either 0 or 90 in the initial DH table created for the inital pose
         self.DH_tab = np.array([[self.links[0], 	0., 		0, 				0.],
                                 [0., 				0., 		0, 				pi/2],
                                 [0., 				0., 		self.links[1], 	0.],
@@ -254,6 +256,7 @@ class RobotKineClass():
             
             ################################################ TASK 3 (replace np.eye(4) with the correct matrices)
             # COMPLETE
+		# calculating the updated pose of end effector by multiplying the transformation matricies
             T_0_i = np.matmul(T_0_i_1, T_i_1_i) #Pose of joint i wrt base
 
             T_0_i_1 = T_0_i
@@ -271,6 +274,7 @@ class RobotKineClass():
         
         ################################################ TASK 4
         # COMPLETE
+	    #calculate r_max and r_min using the equation given in the coursework material
         val = np.power(xP, 2) + np.power(yP, 2) + np.power((zP - l1), 2)
         r_max = (l2 + l3)
         r_min = (l2 - l3)
@@ -304,24 +308,32 @@ class RobotKineClass():
             return q,Poses
         
         ################################################ TASK 6
+	    
         q_a = np.zeros(3)
         q_b = np.zeros(3)
         
         q_a[0] = np.arctan2(yP, xP)
         q_b[0] = np.arctan2(yP, xP)
-        
+
+	    #swap in the equations given for l1*cos(q1)+l2*cos(q1+q2) as r
+	    #swap in the equations given for l1*sin(q1)+l2*sin(q1+q2) as z
         r = sqrt(np.power(xP, 2)+np.power(yP, 2))
         z = zP-l1
 
+	    #use r and z to calculate q1 and q2
+	    # (b) solutions are given as the negative of the (a) solutions
         q_a[2] = np.arccos((np.power(r, 2)+np.power(z, 2)-np.power(l2, 2)-np.power(l3, 2))/(2*l2*l3))
         q_b[2] = -q_a[2]
 
+	    #calculate alpha and beta using equations given in the lecture notes
         a = np.arctan2(z, r)
         b = np.arccos((np.power(r, 2)+np.power(z, 2)+np.power(l2, 2)-np.power(l3, 2))/(2*l2*sqrt(np.power(r, 2)+np.power(z, 2))))
 
+	    # (b) solutions are given as the negative of the (a) solutions
         q_a[1] = a-b
         q_b[1] = a+b
-        
+
+	    #return both (a) and (b) solutions
         q = [q_a, q_b]
         
         Poses = [self.getFK(q_a), self.getFK(q_b)]
@@ -350,6 +362,7 @@ class RobotKineClass():
         l1, l2, l3 = self.links
         
         ################################################ TASK 7
+	    #to compute the differential kinematics, xp, yp and zp, use xp = J(1,1)*q0 + J(1,2)*q1 + J(1,3)*q2
         self.Jacobian = np.array([[-( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * sin(q0),        -((l1 * sin(q1)) + ( (l2 * sin(q1+q2)) ) * cos(q0)),        -(l2 * sin(q1+q2)) * cos(q0)    ],
                                   [ ( (l1 * cos(q1)) + (l2 * cos(q1+q2))) * cos(q0),        -((l1 * sin(q1)) + ( (l2 * sin(q1+q2)) ) * sin(q0)),        -(l2 * sin(q1+q2)) * sin(q0)    ],
                                   [0.                                              ,         (l1 * cos(q1)) + ( l2 * cos(q1 + q2))         ,            (l2 * cos(q1 + q2))             ]])
