@@ -9,12 +9,12 @@ DESE3R:
   joint_0_position_controller:
     type: effort_controllers/JointPositionController
     joint: joint_0
-    pid: {p: 0.2, i: 0.5, d: 0.5}
+    pid: {p: 350, i: 2500, d: 250}
   joint_1_position_controller:
     type: effort_controllers/JointPositionController
     joint: joint_1
-    pid: {p: 0.2, i: 0.5, d: 0.5}
+    pid: {p: 0, i: 1, d: 3}
   joint_2_position_controller:
     type: effort_controllers/JointPositionController
     joint: joint_2
-    pid: {p: 0.2, i: 0.5, d: 0.5}
+    pid: {p: 300, i: 1300, d: 400}

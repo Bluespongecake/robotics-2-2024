@@ -7,7 +7,7 @@
 ## Starting ROS:
 `killall gzserver gzclient` <br>
 `rosrun`<br>
-`rosrun gazeboros gazebo`<br>
+`rosrun gazebo_ros gazebo`<br>
 `source devel/setup.bash`<br>
 `roslaunch coursework_1 coursework_1.launch`<br>
 
