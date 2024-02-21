@@ -253,10 +253,9 @@ class MotionPlanner():
             
             # loop through each point in the list of pixel point locations, updating whether filled on pixelmap to rejected[]
             for idx, point in enumerate(px_points):
-		px_y = int(point[1])
-		px_x = int(point[0])
+            	px_y = int(point[1])
+            	px_x = int(point[0])
             	rejected[idx] = self.pixel_map[px_y, px_x]
-          		
             # self.pixel_map[px_y, px_x] = 1 when an obstacle is present
             # Remember that indexing a 2D array is [row, column], which is [y, x]!
             # You might have to make sure the pixel location is an integer so it can be used to index self.pixel_map
