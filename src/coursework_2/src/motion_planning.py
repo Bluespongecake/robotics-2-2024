@@ -251,11 +251,11 @@ class MotionPlanner():
             # convert locations to pixel points
             px_points = self.map_position(points)
             
-            # loop through points, updating whether filled on pixelmap to rejected[]
+            # loop through each point in the list of pixel point locations, updating whether filled on pixelmap to rejected[]
             for idx, point in enumerate(px_points):
-            	print(point[0])
-            	rejected[idx] = self.pixel_map[int(point[1]), int(point[0])]
-          		
+            	px_y = int(point[1])
+            	px_x = int(point[0])
+            	rejected[idx] = self.pixel_map[px_y, px_x]
             # self.pixel_map[px_y, px_x] = 1 when an obstacle is present
             # Remember that indexing a 2D array is [row, column], which is [y, x]!
             # You might have to make sure the pixel location is an integer so it can be used to index self.pixel_map
@@ -353,7 +353,7 @@ class MotionPlanner():
         ############################################################### TASK E ii     
         # Calculate the distance between the two point
         distance = np.sqrt( (pointA[0] - pointB[0])**2 + (pointA[1] - pointB[1])**2 )
-        print("distance" + str(distance))
+
         # Calculate the UNIT direction vector pointing from pointA to pointB
         
         direction = (pointB - pointA) / np.linalg.norm(pointB - pointA)
@@ -378,7 +378,7 @@ class MotionPlanner():
         
         # Create a dataframe of unvisited nodes
         # Initialise each cost to a very high number
-        initial_cost = 5.0  # Set this to a suitable value
+        initial_cost = 10E6  # Set this to a suitable value
         
         unvisited = pd.DataFrame({'Node': nodes, 'Cost': [initial_cost for node in nodes], 'Previous': ['' for node in nodes]})
         unvisited.set_index('Node', inplace=True)
@@ -419,7 +419,7 @@ class MotionPlanner():
                 if next_node_name not in visited.index.values:  # if we haven't visited this node before
                     
                     # update this to calculate the cost of going from the initial node to the next node via the current node
-                    next_cost_trial = 1234  # set this to calculate the cost of going from the initial node to the next node via the current node
+                    next_cost_trial = current_cost + edge_cost  # set this to calculate the cost of going from the initial node to the next node via the current node
                     next_cost = unvisited.loc[[next_node_name], ['Cost']].values[0] # the previous best cost we've seen going to the next node
                     
                     # if it costs less to go the next node from the current node, update then next node's cost and the path to get there
